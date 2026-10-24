@@ -29,14 +29,11 @@ RAW="$CACHE/radio-browser-$RELEASE.json"
 [ -s "$BORDERS" ] || curl -fL -o "$BORDERS" \
     https://raw.githubusercontent.com/nvkelso/natural-earth-vector/master/geojson/ne_50m_admin_0_countries.geojson
 
+# The snapshot, fetched in resumable pages (re-run to carry on if stopped).
+[ -s "$RAW" ] || python3 "$HERE/tools/fetch_snapshot.py" "$RAW"
+
 # 1. Everything the desktop and Android apps can play.
-if [ -s "$RAW" ]; then
-    FROM="--from-raw $RAW"
-else
-    FROM="--save-raw $RAW"
-fi
-# shellcheck disable=SC2086
-python3 "$RB" $FROM --geonames "$CITIES" --borders "$BORDERS" \
+python3 "$RB" --from-raw "$RAW" --geonames "$CITIES" --borders "$BORDERS" \
     --codecs mp3,aac,aac+,ogg,opus --max 40000 --release "$RELEASE" \
     -o "$OUT/stations.txt"
 

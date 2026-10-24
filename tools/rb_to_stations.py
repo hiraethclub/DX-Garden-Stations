@@ -542,6 +542,21 @@ def km(lat1, lon1, lat2, lon2):
 # --------------------------------------------------------------- the API
 
 
+def servers_from_api():
+    """Fallback when reverse DNS gives no names (common behind proxies):
+    ask any Radio Browser server for the server list over HTTPS."""
+    url = "https://%s/json/servers" % DNS_NAME
+    req = urllib.request.Request(url, headers={"User-Agent": USER_AGENT})
+    try:
+        with urllib.request.urlopen(req, timeout=TIMEOUT_S) as r:
+            data = json.loads(r.read().decode("utf-8"))
+    except (OSError, ValueError) as e:
+        log("server list from %s failed: %s" % (url, e))
+        return []
+    return sorted({str(d.get("name", "")) for d in data
+                   if str(d.get("name", "")).endswith(".radio-browser.info")})
+
+
 def servers():
     """Radio Browser servers in random order, found the documented way: a
     DNS lookup of all.api.radio-browser.info, then each address's name."""
@@ -557,6 +572,8 @@ def servers():
         except OSError:
             continue
     names = [n for n in names if n.endswith(".radio-browser.info")]
+    if not names:
+        names = servers_from_api()
     if not names:
         raise SystemExit("no Radio Browser servers found via " + DNS_NAME)
     random.shuffle(names)

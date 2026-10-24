@@ -11,7 +11,7 @@ All in `stations/`. Each release is tagged with its date (e.g. `2026.10.23`), an
 | File | What's in it | For |
 |---|---|---|
 | `stations.txt` | MP3, AAC, AAC+, Ogg Vorbis and Opus stations | Desktop and Android players |
-| `stations-mp3.txt` | MP3 stations only, capped at 10,000 | PS Vita and other MP3-only players |
+| `stations-mp3.txt` | MP3 stations only | PS Vita and other MP3-only players |
 | `stations.json`, `stations-mp3.json` | The same lists as JSON | Anything that would rather not parse text |
 
 The text files are the master copies. The JSON is generated from them.
@@ -51,7 +51,7 @@ Needs Python 3.8 or newer (standard library only) and curl:
 tools/build.sh 2026.10.23
 ```
 
-This downloads the GeoNames towns file and Natural Earth country borders into `cache/` (once), takes one Radio Browser snapshot, and builds every file in `stations/` from it. The snapshot is kept as `cache/radio-browser-<release>.json`, so a release can be rebuilt offline.
+This downloads the GeoNames towns file and Natural Earth country borders into `cache/` (once), takes one Radio Browser snapshot, and builds every file in `stations/` from it. The snapshot is fetched page by page (`tools/fetch_snapshot.py`), so if it is interrupted, running the build again carries on where it stopped. It is kept as `cache/radio-browser-<release>.json`, so a release can be rebuilt offline.
 
 For a custom list (one country, one genre, a bitrate floor, a quick check for dead streams), run `tools/rb_to_stations.py --help`.
 
