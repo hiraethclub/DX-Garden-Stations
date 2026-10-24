@@ -31,14 +31,6 @@ Name | Stream URL | Country | City | Latitude | Longitude | Genre | Notes
 
 In JSON, each station is `{name, url, country, city, lat, lon, genres, codec, bitrate, rb_id, notes}`.
 
-## How places are labelled
-
-Country labels follow where a station actually is:
-
-- Ukraine's territory, including Crimea and the occupied east and south, is labelled Ukraine.
-- Palestinian territory is labelled Gaza or Occupied West Bank.
-- UK stations are labelled by nation: England, Scotland, Wales or Northern Ireland. The Crown Dependencies use their own names (Isle of Man, Jersey, Guernsey).
-
 ## Stations change
 
 A list is correct as of its snapshot date. Stations move, change address and close, and Radio Browser's entries are written by its users, so some will stop working or sit in the wrong place over time. If you spot a problem with a station, the best fix is at [Radio Browser](https://www.radio-browser.info) itself, so it reaches every app that uses it. The next release here picks it up.
